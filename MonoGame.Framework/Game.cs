@@ -317,7 +317,9 @@ namespace Microsoft.Xna.Framework
         #region Public Methods
 
 #if IOS
-        [Obsolete("This platform's policy does not allow programmatically closing.", true)]
+        // Aspyroad mod : we need to exit - it isnt technically true that you cant exit MonoGame from iOS.
+        // As my mods let us use Monogame inside an existing iOS app
+        // [Obsolete("This platform's policy does not allow programmatically closing.", true)]
 #endif
         public void Exit()
         {

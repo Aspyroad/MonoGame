@@ -127,7 +127,8 @@ namespace Microsoft.Xna.Framework
 
             _mainWindow.Add (_viewController.View);
 
-            _viewController.InterfaceOrientationChanged += ViewController_InterfaceOrientationChanged;
+            // ***AspyRoad
+            //_viewController.InterfaceOrientationChanged += ViewController_InterfaceOrientationChanged;
 
             //(SJ) Why is this called here when it's not in any other project
             //Guide.Initialise(game);
@@ -207,12 +208,16 @@ namespace Microsoft.Xna.Framework
         public override void StartRunLoop()
         {
             // Show the window
-            _mainWindow.MakeKeyAndVisible();
+
+            // ***AspyRoad
+            //_mainWindow.MakeKeyAndVisible();
 
             // In iOS 8+ we need to set the root view controller *after* Window MakeKey
             // This ensures that the viewController's supported interface orientations
             // will be respected at launch
-            _mainWindow.RootViewController = _viewController;
+
+            //***AspyMod
+            //_mainWindow.RootViewController = _viewController;
 
             BeginObservingUIApplication();
 
@@ -276,7 +281,13 @@ namespace Microsoft.Xna.Framework
 
         public override void Exit()
         {
-            // Do Nothing: iOS games do not "exit" or shut down.
+            if (_displayLink != null)
+            {
+                _displayLink.RemoveFromRunLoop(NSRunLoop.Main, NSRunLoop.NSDefaultRunLoopMode);
+            }
+            this._viewController.WillMoveToParentViewController(null);
+            this._viewController.View.RemoveFromSuperview();
+            //this._viewController = null;
         }
 
         private void BeginObservingUIApplication()
