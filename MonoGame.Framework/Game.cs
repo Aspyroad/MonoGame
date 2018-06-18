@@ -316,9 +316,10 @@ namespace Microsoft.Xna.Framework
 
         #region Public Methods
 
-#if IOS
-        [Obsolete("This platform's policy does not allow programmatically closing.", true)]
-#endif
+        // AspyRoad Mod - We run monogame inside an app so we need to exit.
+//#if IOS
+//        [Obsolete("This platform's policy does not allow programmatically closing.", true)]
+//#endif
         public void Exit()
         {
             _shouldExit = true;

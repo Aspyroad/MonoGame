@@ -116,7 +116,11 @@ namespace Microsoft.Xna.Framework
             #endif
 
             // Create a full-screen window
-            _mainWindow = new UIWindow (UIScreen.MainScreen.Bounds);
+
+
+            // ***ASPYMOD 
+            //_mainWindow = new UIWindow (UIScreen.MainScreen.Bounds);
+            _mainWindow = UIApplication.SharedApplication.KeyWindow;
 			//_mainWindow.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
 			
             game.Services.AddService (typeof(UIWindow), _mainWindow);
@@ -127,7 +131,8 @@ namespace Microsoft.Xna.Framework
 
             _mainWindow.Add (_viewController.View);
 
-            _viewController.InterfaceOrientationChanged += ViewController_InterfaceOrientationChanged;
+            // ***ASPYMOD
+            //_viewController.InterfaceOrientationChanged += ViewController_InterfaceOrientationChanged;
 
             //(SJ) Why is this called here when it's not in any other project
             //Guide.Initialise(game);
@@ -274,9 +279,25 @@ namespace Microsoft.Xna.Framework
             // Do nothing: iOS games are always full screen
         }
 
+        //***ASPYMOD 
+        // We need to impiment Exit as MONOGame does not controll program flow, Numbers does.
+
+        //public override void Exit()
+        //{
+        //    // Do Nothing: iOS games do not "exit" or shut down.
+        //}
+
+        //***ASPYMOD 
+        // New exit method
         public override void Exit()
         {
-            // Do Nothing: iOS games do not "exit" or shut down.
+            if (_displayLink != null)
+            {
+                _displayLink.RemoveFromRunLoop(NSRunLoop.Main, NSRunLoop.NSDefaultRunLoopMode);
+            }
+            this._viewController.WillMoveToParentViewController(null);
+            this._viewController.View.RemoveFromSuperview();
+            //this._viewController = null;
         }
 
         private void BeginObservingUIApplication()
